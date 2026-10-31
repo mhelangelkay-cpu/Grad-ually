@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grad-ually</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--sf:#fff;--ink:#16181d;--mu:#6b7280;--ln:#e5e7eb;--ac:#16181d;--ai:#fff;--ok:#16a34a;--hot:#e11d48;--am:#d97706;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media not all{:root:not([data-theme="light"]){--bg:#121a10;--sf:#1b2618;--ink:#ecf3e4;--mu:#a0b192;--ln:#2c3a27;--ac:#a8d27a;--ai:#12200a;--ok:#a8d27a;--hot:#ff7f9d;--am:#f0b94a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121a10;--sf:#1b2618;--ink:#ecf3e4;--mu:#a0b192;--ln:#2c3a27;--ac:#a8d27a;--ai:#12200a;--ok:#a8d27a;--hot:#ff7f9d;--am:#f0b94a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.4}
+main{max-width:760px;margin:0 auto;padding:16px 14px 60px}
+h1{font-size:22px;font-weight:800;margin:0 0 10px;letter-spacing:-.01em}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;border:1px solid var(--ln);background:var(--sf);color:var(--mu);padding:8px 14px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
+nav button[aria-current="page"]{background:var(--ac);color:var(--ai);border-color:var(--ac)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:12px}
+h2{font-size:16px;font-weight:600;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:12px}
+.stat small{color:var(--mu)}.stat b{display:block;font-size:26px;font-weight:800}
+form{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+input,select,textarea{font:inherit;font-size:16px;padding:9px 11px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--ink);min-width:0}
+form input[type=text]{flex:1 1 150px}
+form input[type=number]{width:90px}
+button.pri{border:0;background:var(--ac);color:var(--ai);font:inherit;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer}
+button.gh{border:1px solid var(--ln);background:none;color:var(--ink);font:inherit;padding:8px 14px;border-radius:10px;cursor:pointer}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--ln)}
+.row:first-of-type{border-top:0}
+.row .t{flex:1;min-width:0}.row .t span{display:block;color:var(--mu);font-size:13px}
+.row.done .t b{text-decoration:line-through;color:var(--mu)}
+.chk{width:26px;height:26px;border-radius:8px;border:2px solid var(--ln);background:none;color:var(--ai);cursor:pointer;flex:none;font-weight:800;padding:0}
+.chk.on{background:var(--ok);border-color:var(--ok)}
+.x{border:0;background:none;color:var(--mu);font-size:20px;cursor:pointer;padding:2px 8px}
+.pill{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--ln);color:var(--mu)}
+.hi{color:var(--hot);border-color:var(--hot)}.md{color:var(--am);border-color:var(--am)}
+.late{color:var(--hot)}
+.bar{height:8px;background:var(--ln);border-radius:99px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:99px}
+.empty{color:var(--mu);margin:6px 0}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.mh b{font-size:17px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal .w{font-size:12px;color:var(--mu)}
+.cal button{aspect-ratio:1;border:1px solid transparent;border-radius:10px;background:none;color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0}
+.cal button.tod{border-color:var(--ac)}
+.cal button.sel{background:var(--ac);color:var(--ai)}
+.dots{display:flex;gap:3px;height:5px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--ac)}
+.dots i.k{background:var(--hot)}
+.sel .dots i{background:var(--ai)}
+.hab{display:grid;grid-template-columns:1fr repeat(7,30px);gap:4px;align-items:center;padding:7px 0;border-top:1px solid var(--ln)}
+.hab.hd{border-top:0;color:var(--mu);font-size:12px;text-align:center}
+.hab .n b{display:block}.hab .n span{font-size:12px;color:var(--mu)}
+.hab .chk{width:28px;height:28px}
+.timer{font-size:56px;font-weight:800;text-align:center;letter-spacing:.02em}
+.ctr{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+h1{color:var(--ink)}
+.hab .chk.on{background:var(--hot);border-color:var(--hot)}
+.cal button.tod{border-color:var(--hot)}
+label.gh{display:inline-block;cursor:pointer}
+.vg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vc{position:relative;border-radius:14px;overflow:hidden;background:var(--sf);border:1px solid var(--ln)}
+.vc img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.vc p{margin:0;padding:8px 10px;font-weight:600}
+.vc .x{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;width:28px;height:28px;padding:0}
+.vc.tx{display:flex;align-items:center;justify-content:center;aspect-ratio:4/5;text-align:center;padding:14px;background:var(--hot);color:#fff;font-size:18px;font-weight:800}
+.vc.tx:nth-child(even){background:var(--ac);color:var(--ai)}
+.vc.tx .x{color:inherit;background:none}
+.dots i.h{background:var(--ok)}
+.rep{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.axis{display:flex;justify-content:space-between;color:var(--mu);font-size:12px}
+.hm{display:flex;flex-wrap:wrap;gap:4px}
+.hdy{width:30px;height:30px;border-radius:8px;border:1px solid var(--ln);background:none;font:inherit;font-size:12px;color:var(--mu);cursor:pointer;padding:0}
+.hdy.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.hdy.fut{opacity:.45}
+</style>
+</head>
+<body>
+<main>
+<h1>Grad-ually <span id="sy" class="pill" style="font-size:12px;vertical-align:middle"></span></h1>
+<nav id="nav"></nav>
+<div id="v"></div>
+</main>
+<script>
+const KEY='college-planner-v1',$=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fd=s=>new Date(s+'T00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+let S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+S=Object.assign({events:[],tasks:[],habits:[],log:{},courses:[],books:[],focus:{},res:[],vision:[],goals:{},logs:[],clock:null},S);
+let saveErr=false;const save=()=>{S.ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S));saveErr=false}catch(e){saveErr=true}if(window.syncPush)syncPush()};
+const T0=()=>iso(new Date());
+let tab='home',cal=new Date(),sel=T0();cal.setDate(1);
+let pom={left:1500,run:false,mode:'f',id:null};
+const TABS=[['home','Home'],['habits','Habits'],['tasks','Tasks'],['courses','Courses'],['books','Books'],['res','Resources'],['week','Week'],['vision','Vision board'],['tools','Study'],['backup','Backup & sync']];
+const GR={A:4,'A-':3.7,'B+':3.3,B:3,'B-':2.7,'C+':2.3,C:2,'C-':1.7,D:1,F:0};
+const prog=c=>c.items.length?Math.round(c.items.filter(i=>i.done).length/c.items.length*100):0;
+const bar=p=>`<div class="bar"><i style="width:${p}%"></i></div>`;
+const evSort=(a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''));
+const evRow=e=>`<div class="row"><div class="t"><b>${esc(e.title)}</b><span>${fd(e.date)}${e.time?' · '+e.time:''} · ${esc(e.kind)}${e.rep?' · repeats '+e.rep:''}</span></div><button class="x" data-a="de" data-id="${e.id}" aria-label="Delete event">×</button></div>`;
+const taskRow=t=>{const late=!t.done&&t.due&&t.due<T0();const c=S.courses.find(c=>c.id===t.course);
+ return `<div class="row ${t.done?'done':''}"><button class="chk ${t.done?'on':''}" data-a="tt" data-id="${t.id}" aria-label="Toggle done">${t.done?'✓':''}</button><div class="t"><b>${esc(t.title)}</b><span class="${late?'late':''}">${t.due?(late?'Overdue · ':'Due ')+fd(t.due):'No date'}${c?' · '+esc(c.name):''}</span></div>${t.pri!=='Low'?`<span class="pill ${t.pri==='High'?'hi':'md'}">${t.pri}</span>`:''}<button class="x" data-a="dt" data-id="${t.id}" aria-label="Delete task">×</button></div>`};
+const streak=id=>{const L=S.log[id]||{};let d=new Date(),n=0;if(!L[iso(d)])d.setDate(d.getDate()-1);while(L[iso(d)]){n++;d.setDate(d.getDate()-1)}return n};
+
+const V={
+home(){const t=T0(),open=S.tasks.filter(x=>!x.done),due=open.filter(x=>x.due&&x.due<=t).sort((a,b)=>a.due.localeCompare(b.due));
+ const hd=S.habits.filter(h=>(S.log[h.id]||{})[t]).length,up=S.events.filter(e=>e.date>=t).sort(evSort).slice(0,5);
+ return `<div class="grid"><div class="stat"><small>Tasks due or overdue</small><b>${due.length}</b></div><div class="stat"><small>Habits done today</small><b>${hd}/${S.habits.length}</b></div><div class="stat"><small>Study sessions today</small><b>${S.focus[t]||0}</b></div><div class="stat"><small>Open tasks</small><b>${open.length}</b></div></div>
+ <div class="card"><h2>Due now</h2>${due.length?due.map(taskRow).join(''):'<p class="empty">Nothing due. Add tasks in the Tasks tab.</p>'}</div>
+ <div class="card"><h2>Coming up</h2>${up.length?up.map(evRow).join(''):'<p class="empty">No upcoming events. Add classes and exams in Calendar.</p>'}</div>
+ <div class="card"><h2>Course progress</h2>${S.courses.length?S.courses.map(c=>`<div><b>${esc(c.name)}</b> <span class="pill">${prog(c)}%</span>${bar(prog(c))}</div>`).join(''):'<p class="empty">Add your courses in the Courses tab.</p>'}</div>`},
+cal(){const y=cal.getFullYear(),m=cal.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+ let g='SMTWTFS'.split('').map(d=>`<div class="w">${d}</div>`).join('')+'<span></span>'.repeat(first);
+ for(let d=1;d<=n;d++){const s=y+'-'+pad(m+1)+'-'+pad(d),ev=evOn(s).length>0,tk=S.tasks.some(x=>x.due===s&&!x.done),hb=S.habits.some(h=>(S.log[h.id]||{})[s]);
+  g+=`<button data-a="sel" data-d="${s}" class="${s===T0()?'tod':''} ${s===sel?'sel':''}"><span>${d}</span><span class="dots">${ev?'<i></i>':''}${tk?'<i class="k"></i>':''}${hb?'<i class="h"></i>':''}</span></button>`}
+ const es=evOn(sel).sort(evSort),ts=S.tasks.filter(x=>x.due===sel);
+ return `<div class="card"><div class="mh"><button class="gh" data-a="cm" data-n="-1" aria-label="Previous month">‹</button><b>${cal.toLocaleString('en-US',{month:'long',year:'numeric'})}</b><button class="gh" data-a="cm" data-n="1" aria-label="Next month">›</button></div><div class="cal">${g}</div></div>
+ <div class="card"><h2>${fd(sel)}</h2>${es.map(evRow).join('')}${ts.map(taskRow).join('')}${S.habits.map(h=>{const on=(S.log[h.id]||{})[sel];return `<div class="row"><button class="chk ${on?'on':''}" data-a="th" data-id="${h.id}" data-d="${sel}" aria-label="Habit ${esc(h.name)}">${on?'✓':''}</button><div class="t"><b>${esc(h.name)}</b><span>Habit</span></div></div>`}).join('')}${es.length+ts.length+S.habits.length?'':'<p class="empty">Nothing scheduled.</p>'}
+ <form data-f="event"><input type="text" name="title" placeholder="Class, exam, meeting…" required><input type="time" name="time"><select name="kind"><option>Class</option><option>Exam</option><option>Event</option><option>Deadline</option></select><select name="rep" aria-label="Repeat"><option value="">Doesn’t repeat</option><option value="weekly">Repeats weekly</option><option value="daily">Repeats daily</option></select><button class="pri">Add</button></form><form data-f="task"><input type="hidden" name="due" value="${sel}"><input type="hidden" name="pri" value="Medium"><input type="hidden" name="course" value=""><input type="text" name="title" placeholder="Add a task due this day" required><button class="gh">Add task</button></form></div>`},
+tasks(){const L=[...S.tasks].sort((a,b)=>a.done-b.done||(a.due||'9').localeCompare(b.due||'9'));
+ return `<div class="card"><form data-f="task"><input type="text" name="title" placeholder="New task" required><input type="date" name="due"><select name="pri"><option>Medium</option><option>High</option><option>Low</option></select><select name="course"><option value="">No course</option>${S.courses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><button class="pri">Add task</button></form>${L.length?L.map(taskRow).join(''):'<p class="empty">Your to-do list is empty.</p>'}</div>`},
+habits(){const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return d});
+ return `<div class="card"><form data-f="habit"><input type="text" name="name" placeholder="New habit (e.g. Read 20 min)" required><button class="pri">Add habit</button></form>
+ ${S.habits.length?`<div class="hab hd"><span></span>${days.map(d=>`<span>${'SMTWTFS'[d.getDay()]}</span>`).join('')}</div>`+S.habits.map(h=>`<div class="hab"><div class="n"><b>${esc(h.name)}</b><span>${streak(h.id)}-day streak · <button class="x" style="font-size:12px;padding:0" data-a="dh" data-id="${h.id}">remove</button></span></div>${days.map(d=>{const s=iso(d),on=(S.log[h.id]||{})[s];return `<button class="chk ${on?'on':''}" data-a="th" data-id="${h.id}" data-d="${s}" aria-label="${esc(h.name)} ${s}">${on?'✓':''}</button>`}).join('')}</div>`).join(''):'<p class="empty">Add a habit to start a streak.</p>'}</div>`},
+courses(){return `<div class="card"><form data-f="course"><input type="text" name="name" placeholder="Course (e.g. BIO 101)" required><input type="number" name="credits" placeholder="Credits" min="0" step="0.5" value="3"><input type="text" name="info" placeholder="Professor, room, schedule"><button class="pri">Add course</button></form></div>`+
+ S.courses.map(c=>`<div class="card"><div class="mh"><div><b>${esc(c.name)}</b> <span class="pill">${c.credits} cr</span><div class="empty">${esc(c.info||'')}</div></div><button class="x" data-a="dc" data-id="${c.id}" aria-label="Delete course">×</button></div>
+ ${scoreHtml(c)}<h2 style="margin-top:12px">Syllabus checklist</h2><b>${prog(c)}%</b> complete${bar(prog(c))}
+ ${c.items.map((i,k)=>`<div class="row ${i.done?'done':''}"><button class="chk ${i.done?'on':''}" data-a="ci" data-id="${c.id}" data-k="${k}">${i.done?'✓':''}</button><div class="t"><b>${esc(i.text)}</b></div><button class="x" data-a="di" data-id="${c.id}" data-k="${k}" aria-label="Remove item">×</button></div>`).join('')}
+ <form data-f="item" data-id="${c.id}" style="margin:8px 0 0"><input type="text" name="text" placeholder="Syllabus item: chapter, paper, exam…" required><button class="pri">Add</button></form></div>`).join('')+(S.courses.length?'':'<p class="empty">Add a course, then build its syllabus checklist.</p>')},
+books(){return `<div class="card"><form data-f="book"><input type="text" name="title" placeholder="Book title" required><input type="text" name="author" placeholder="Author"><input type="number" name="pages" placeholder="Pages" min="1" required><button class="pri">Add book</button></form></div>`+
+ S.books.map(b=>{const p=Math.min(100,Math.round(b.read/b.pages*100));return `<div class="card"><div class="mh"><div><b>${esc(b.title)}</b><div class="empty">${esc(b.author||'')}</div></div><button class="x" data-a="db" data-id="${b.id}" aria-label="Delete book">×</button></div>${bar(p)}<label>Page <input type="number" data-pg="${b.id}" value="${b.read}" min="0" max="${b.pages}" style="width:90px"> of ${b.pages} · ${p>=100?'Finished':p+'%'}</label></div>`}).join('')+(S.books.length?'':'<p class="empty">Add the books you’re reading.</p>')},
+tools(){const m=pom.left/60|0,s=pom.left%60,gc=S.courses.filter(c=>GR[c.grade]!==undefined),cr=gc.reduce((a,c)=>a+ +c.credits,0),gpa=cr?(gc.reduce((a,c)=>a+GR[c.grade]*c.credits,0)/cr).toFixed(2):'–';
+ return `<div class="card"><h2>${pom.mode==='f'?'Focus':'Break'} timer</h2><div class="timer" id="tm">${pad(m)}:${pad(s)}</div><div class="ctr"><button class="pri" data-a="ps">${pom.run?'Pause':'Start'}</button><button class="gh" data-a="pr">Reset</button><button class="gh" data-a="pm">${pom.mode==='f'?'Switch to break':'Switch to focus'}</button></div><p class="empty" style="text-align:center">25 minutes focus, 5 minutes break. Today: ${S.focus[T0()]||0} sessions.</p></div>
+ <div class="card"><h2>GPA calculator <span class="pill">${gpa}</span></h2>${S.courses.length?S.courses.map(c=>`<div class="row"><div class="t"><b>${esc(c.name)}</b><span>${c.credits} credits</span></div><select data-gr="${c.id}"><option value="">Grade</option>${Object.keys(GR).map(g=>`<option ${c.grade===g?'selected':''}>${g}</option>`).join('')}</select></div>`).join(''):'<p class="empty">Add courses first, then pick each grade here (4.0 scale).</p>'}</div>`}
+};
+
+function render(){$('#nav').innerHTML=TABS.map(([k,l])=>`<button data-a="tab" data-t="${k}" ${k===tab?'aria-current="page"':''}>${l}</button>`).join('');$('#v').innerHTML=(saveErr?'<div class="card late"><b>Storage is full.</b> Remove some images so new changes can save.</div>':'')+V[tab]()}
+function tick(){pom.left--;if(pom.left<=0){if(pom.mode==='f'){S.focus[T0()]=(S.focus[T0()]||0)+1;save()}pom.mode=pom.mode==='f'?'b':'f';pom.left=pom.mode==='f'?1500:300;pom.run=false;clearInterval(pom.id);if(tab==='tools')render();return}
+ const e=$('#tm');if(e)e.textContent=pad(pom.left/60|0)+':'+pad(pom.left%60)}
+const A={tab:d=>{tab=d.t;render()},sel:d=>{sel=d.d;render()},cm:d=>{cal.setMonth(cal.getMonth()+ +d.n);render()},
+ tt:d=>{const t=S.tasks.find(x=>x.id===d.id);t.done=!t.done},dt:d=>{S.tasks=S.tasks.filter(x=>x.id!==d.id)},de:d=>{S.events=S.events.filter(x=>x.id!==d.id)},
+ th:d=>{const L=S.log[d.id]=S.log[d.id]||{};L[d.d]=!L[d.d]},dh:d=>{S.habits=S.habits.filter(x=>x.id!==d.id)},
+ ci:d=>{const i=S.courses.find(c=>c.id===d.id).items[d.k];i.done=!i.done},di:d=>{S.courses.find(c=>c.id===d.id).items.splice(d.k,1)},
+ dc:d=>{S.courses=S.courses.filter(x=>x.id!==d.id)},db:d=>{S.books=S.books.filter(x=>x.id!==d.id)},
+ ps:()=>{if(pom.run){clearInterval(pom.id);pom.run=false}else{pom.run=true;pom.id=setInterval(tick,1000)}},
+ pr:()=>{clearInterval(pom.id);pom.run=false;pom.left=pom.mode==='f'?1500:300},
+ pm:()=>{clearInterval(pom.id);pom.run=false;pom.mode=pom.mode==='f'?'b':'f';pom.left=pom.mode==='f'?1500:300}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;A[b.dataset.a](b.dataset);save();render()});
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f]');if(!f)return;e.preventDefault();const d=Object.fromEntries(new FormData(f)),k=f.dataset.f;
+ if(k==='event')S.events.push({id:uid(),date:sel,title:d.title.trim(),time:d.time,kind:d.kind,rep:d.rep||''});
+ if(k==='task')S.tasks.push({id:uid(),title:d.title.trim(),due:d.due,pri:d.pri,course:d.course,done:false});
+ if(k==='habit')S.habits.push({id:uid(),name:d.name.trim()});
+ if(k==='course')S.courses.push({id:uid(),name:d.name.trim(),credits:+d.credits||0,info:d.info.trim(),items:[],grade:''});
+ if(k==='item')S.courses.find(c=>c.id===f.dataset.id).items.push({text:d.text.trim(),done:false});
+ if(k==='book')S.books.push({id:uid(),title:d.title.trim(),author:d.author.trim(),pages:+d.pages,read:0});
+ save();render()});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset.pg){const b=S.books.find(x=>x.id===t.dataset.pg);b.read=Math.max(0,Math.min(b.pages,+t.value||0));save();render()}
+ if(t.dataset.gr){S.courses.find(c=>c.id===t.dataset.gr).grade=t.value;save();render()}});
+let wk=(()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));return d})();
+V.week=()=>{const days=[...Array(7)].map((_,i)=>{const d=new Date(wk);d.setDate(d.getDate()+i);return iso(d)}),G=S.goals[days[0]]||[];
+ return `<div class="card"><div class="mh"><button class="gh" data-a="wm" data-n="-1" aria-label="Previous week">‹</button><b>${fd(days[0])} – ${fd(days[6])}</b><button class="gh" data-a="wm" data-n="1" aria-label="Next week">›</button></div><h2>Weekly goals</h2>${G.map((g,i)=>`<div class="row ${g.done?'done':''}"><button class="chk ${g.done?'on':''}" data-a="gg" data-k="${i}">${g.done?'✓':''}</button><div class="t"><b>${esc(g.text)}</b></div><button class="x" data-a="dg" data-k="${i}" aria-label="Remove goal">×</button></div>`).join('')}<form data-f="goal" style="margin:8px 0 0"><input type="text" name="text" placeholder="Goal for this week" required><button class="pri">Add</button></form></div>`+days.map(s=>{const es=evOn(s).sort(evSort),ts=S.tasks.filter(x=>x.due===s),td=s===T0();return `<div class="card"><h2${td?' style="color:var(--hot)"':''}>${fd(s)}${td?' · Today':''}</h2>${es.map(evRow).join('')}${ts.map(taskRow).join('')}${es.length+ts.length?'':'<p class="empty">Free day.</p>'}<form data-f="wev" data-d="${s}" style="margin:8px 0 0"><input type="text" name="title" placeholder="Add to this day" required><input type="time" name="time"><button class="pri">Add</button></form></div>`}).join('')};
+V.res=()=>`<div class="card"><form data-f="res"><input type="text" name="title" placeholder="Resource name" required><input type="text" name="url" inputmode="url" placeholder="Link (optional)"><select name="type">${['Video','Article','Notes','Website','PDF','Other'].map(t=>`<option>${t}</option>`).join('')}</select><select name="course"><option value="">No course</option>${S.courses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><button class="pri">Save</button></form>${S.res.length?S.res.map(r=>{const c=S.courses.find(c=>c.id===r.course);return `<div class="row"><div class="t"><b>${r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--ac)">${esc(r.title)}</a>`:esc(r.title)}</b><span>${r.type}${c?' · '+esc(c.name):''}</span></div><button class="x" data-a="dr" data-id="${r.id}" aria-label="Delete resource">×</button></div>`}).join(''):'<p class="empty">Save links, videos, notes and PDFs for your classes.</p>'}</div>`;
+V.vision=()=>`<div class="card"><form data-f="vtext" style="margin:0"><input type="text" name="cap" placeholder="Caption or affirmation"><label class="gh">+ Photo<input type="file" accept="image/*" data-img hidden></label><button class="pri">Add text card</button></form><p class="empty">Choosing a photo adds it with the caption typed above.</p></div><div class="vg">${S.vision.map(v=>v.src?`<div class="vc"><img src="${v.src}" alt="${esc(v.cap||'Vision board image')}">${v.cap?`<p>${esc(v.cap)}</p>`:''}<button class="x" data-a="dv" data-id="${v.id}" aria-label="Delete">×</button></div>`:`<div class="vc tx"><span>${esc(v.cap)}</span><button class="x" data-a="dv" data-id="${v.id}" aria-label="Delete">×</button></div>`).join('')}</div>${S.vision.length?'':'<p class="empty">Your vision board is empty. Add a photo or an affirmation.</p>'}`;
+V.books=()=>`<div class="card"><form data-f="book"><input type="text" name="title" placeholder="Book title" required><input type="text" name="author" placeholder="Author"><input type="number" name="pages" placeholder="Pages" min="1" required><button class="pri">Add book</button></form></div>`+S.books.map(b=>{b.ch=b.ch||[];const p=Math.min(100,Math.round(b.read/b.pages*100)),cd=b.ch.filter(c=>c.done).length;return `<div class="card"><div class="mh"><div><b>${esc(b.title)}</b><div class="empty">${esc(b.author||'')}</div></div><button class="x" data-a="db" data-id="${b.id}" aria-label="Delete book">×</button></div>Pages: ${p>=100?'Finished':p+'%'}${bar(p)}<label>Page <input type="number" data-pg="${b.id}" value="${b.read}" min="0" max="${b.pages}" style="width:90px"> of ${b.pages}</label><h2 style="margin-top:12px">Chapters${b.ch.length?' · '+cd+'/'+b.ch.length:''}</h2>${b.ch.length?bar(Math.round(cd/b.ch.length*100)):''}${b.ch.map((c,k)=>`<div class="row ${c.done?'done':''}"><button class="chk ${c.done?'on':''}" data-a="cc" data-id="${b.id}" data-k="${k}">${c.done?'✓':''}</button><div class="t"><b>${esc(c.t)}</b></div><button class="x" data-a="dk" data-id="${b.id}" data-k="${k}" aria-label="Remove chapter">×</button></div>`).join('')}<form data-f="chap" data-id="${b.id}" style="margin:8px 0 0"><input type="text" name="t" placeholder="Chapter title"><button class="pri">Add</button></form><form data-f="chapn" data-id="${b.id}" style="margin:0"><input type="number" name="n" min="1" max="100" placeholder="How many?" required><button class="gh">Add numbered chapters</button></form></div>`}).join('')+(S.books.length?'':'<p class="empty">Add the books you’re reading.</p>');
+const bk=d=>S.books.find(b=>b.id===d.id);
+Object.assign(A,{wm:d=>{wk.setDate(wk.getDate()+7*+d.n)},gg:d=>{const g=S.goals[iso(wk)][d.k];g.done=!g.done},dg:d=>{S.goals[iso(wk)].splice(d.k,1)},dr:d=>{S.res=S.res.filter(x=>x.id!==d.id)},dv:d=>{S.vision=S.vision.filter(x=>x.id!==d.id)},cc:d=>{const c=bk(d).ch[d.k];c.done=!c.done},dk:d=>{bk(d).ch.splice(d.k,1)}});
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f]');if(!f||!['wev','goal','res','vtext','chap','chapn'].includes(f.dataset.f))return;e.preventDefault();e.stopImmediatePropagation();const d=Object.fromEntries(new FormData(f)),k=f.dataset.f;
+ if(k==='wev')S.events.push({id:uid(),date:f.dataset.d,title:d.title.trim(),time:d.time,kind:'Event'});
+ if(k==='goal')(S.goals[iso(wk)]=S.goals[iso(wk)]||[]).push({text:d.text.trim(),done:false});
+ if(k==='res'){let u=d.url.trim();if(u&&!/^https?:\/\//i.test(u))u='https://'+u;S.res.push({id:uid(),title:d.title.trim(),url:u,type:d.type,course:d.course})}
+ if(k==='vtext'){if(!d.cap.trim())return;S.vision.push({id:uid(),cap:d.cap.trim()})}
+ if(k==='chap'){const b=bk(f.dataset);b.ch=b.ch||[];b.ch.push({t:d.t.trim()||'Chapter '+(b.ch.length+1),done:false})}
+ if(k==='chapn'){const b=bk(f.dataset);b.ch=b.ch||[];const n=Math.min(100,+d.n||0);for(let i=0;i<n;i++)b.ch.push({t:'Chapter '+(b.ch.length+1),done:false})}
+ save();render()},true);
+function addImg(file,cap){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,700/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);S.vision.push({id:uid(),src:c.toDataURL('image/jpeg',.72),cap});save();render()};im.src=r.result};r.readAsDataURL(file)}
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.img!==undefined&&t.files[0]){addImg(t.files[0],t.closest('form').cap.value.trim());t.value=''}});
+const dd=(a,b)=>Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/864e5);
+const evOn=s=>S.events.filter(e=>e.date===s||(e.rep&&s>e.date&&(e.rep==='daily'||dd(e.date,s)%7===0))).map(e=>({...e,date:s}));
+const LT=p=>p>=93?'A':p>=90?'A-':p>=87?'B+':p>=83?'B':p>=80?'B-':p>=77?'C+':p>=73?'C':p>=70?'C-':p>=60?'D':'F';
+const scoreHtml=c=>{const L=c.scores=c.scores||[],tw=L.reduce((a,x)=>a+(x.w||1),0),g=tw?L.reduce((a,x)=>a+(x.w||1)*x.s/x.m,0)/tw*100:0;
+ return `<h2>Scores</h2>${L.length?`<div class="mh"><b style="font-size:24px">${g.toFixed(1)}%</b><span class="pill">${LT(g)}</span></div>${bar(Math.min(100,Math.round(g)))}`:'<p class="empty">Add quizzes, exams and assignments to see your current grade. Leave weight blank for equal weighting.</p>'}${L.map((x,k)=>`<div class="row"><div class="t"><b>${esc(x.n)}</b><span>${x.s}/${x.m}${x.w?' · '+x.w+'% of grade':''}</span></div><b>${(x.s/x.m*100).toFixed(0)}%</b><button class="x" data-a="ds" data-id="${c.id}" data-k="${k}" aria-label="Remove score">×</button></div>`).join('')}<form data-f="score" data-id="${c.id}" style="margin:8px 0 12px"><input type="text" name="n" placeholder="Quiz, exam, paper…" required><input type="number" name="s" step="any" placeholder="Score" required style="width:80px"><input type="number" name="m" step="any" placeholder="Out of" value="100" style="width:80px"><input type="number" name="w" step="any" placeholder="Weight %" style="width:90px"><button class="pri">Add</button></form>`};
+let hm=new Date();hm.setDate(1);
+V.home=()=>{const t=T0(),tk=S.tasks,td=tk.filter(x=>x.done).length,tp=tk.length?Math.round(td/tk.length*100):0,hs=S.habits.length,hd=S.habits.filter(h=>(S.log[h.id]||{})[t]).length,mo=t.slice(0,7),dm=new Date().getDate(),hmd=S.habits.reduce((a,h)=>a+Object.keys(S.log[h.id]||{}).filter(d=>d.startsWith(mo)&&S.log[h.id][d]).length,0),hp=hs?Math.round(hmd/(hs*dm)*100):0,cp=S.courses.length?Math.round(S.courses.reduce((a,c)=>a+prog(c),0)/S.courses.length):0,bp=S.books.length?Math.round(S.books.reduce((a,b)=>a+Math.min(1,b.read/b.pages),0)/S.books.length*100):0;
+ const row=(l,p,s)=>`<div style="margin-bottom:10px"><div class="mh" style="margin:0"><b>${l}</b><span class="pill">${s}</span></div>${bar(p)}</div>`;
+ return `<div class="grid"><div class="stat"><small>Tasks due today</small><b>${tk.filter(x=>!x.done&&x.due===t).length}</b></div><div class="stat"><small>Overdue</small><b>${tk.filter(x=>!x.done&&x.due&&x.due<t).length}</b></div><div class="stat"><small>Habits today</small><b>${hd}/${hs}</b></div><div class="stat"><small>Study sessions today</small><b>${S.focus[t]||0}</b></div></div><div class="card"><h2>Progress summary</h2>${row('Tasks',tp,td+'/'+tk.length+' done')}${row('Habits this month',hp,hp+'%')}${row('Courses (syllabus)',cp,cp+'%')}${row('Books',bp,bp+'%')}</div>`+V.cal()};
+V.habits=()=>{const y=hm.getFullYear(),m=hm.getMonth(),n=new Date(y,m+1,0).getDate(),days=[...Array(n)].map((_,i)=>y+'-'+pad(m+1)+'-'+pad(i+1)),H=S.habits,t=T0(),on=(h,s)=>(S.log[h.id]||{})[s],cnt=days.map(s=>H.filter(h=>on(h,s)).length),tot=cnt.reduce((a,b)=>a+b,0),el=days.filter(s=>s<=t).length,poss=H.length*el,pct=poss?Math.round(tot/poss*100):0,mx=Math.max(1,H.length),per=H.map(h=>({h,c:days.filter(s=>on(h,s)).length})),best=per.length?[...per].sort((a,b)=>b.c-a.c)[0]:null,perfect=H.length?cnt.filter(c=>c===H.length).length:0,C=2*Math.PI*34;
+ const bars=cnt.map((c,i)=>{const h=Math.round(c/mx*80);return `<rect x="${i*10+1}" y="${90-h}" width="8" height="${Math.max(h,2)}" rx="2" fill="${days[i]===t?'var(--hot)':c?'var(--ok)':'var(--ln)'}"/>`}).join('');
+ return `<div class="card"><div class="mh"><button class="gh" data-a="hmv" data-n="-1" aria-label="Previous month">‹</button><b>${hm.toLocaleString('en-US',{month:'long',year:'numeric'})}</b><button class="gh" data-a="hmv" data-n="1" aria-label="Next month">›</button></div><h2>Monthly report</h2><div class="rep"><svg viewBox="0 0 90 90" width="110" height="110" role="img" aria-label="Completion ${pct} percent"><circle cx="45" cy="45" r="34" fill="none" stroke="var(--ln)" stroke-width="10"/><circle cx="45" cy="45" r="34" fill="none" stroke="var(--ok)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*pct/100} ${C}" transform="rotate(-90 45 45)"/><text x="45" y="50" text-anchor="middle" font-size="18" font-weight="800" fill="var(--ink)">${pct}%</text></svg><div><div><b>${tot}</b> check-ins</div><div><b>${perfect}</b> perfect days</div><div>Top habit: <b>${best&&best.c?esc(best.h.name):'–'}</b></div></div></div><h2>Habits done each day</h2><svg viewBox="0 0 ${n*10} 92" width="100%" height="92" role="img" aria-label="Bar chart of habits done each day">${bars}</svg><div class="axis"><span>1</span><span>${n}</span></div></div>
+<div class="card"><form data-f="habit"><input type="text" name="name" placeholder="New habit (e.g. Read 20 min)" required><button class="pri">Add habit</button></form>${per.length?per.map(({h,c})=>`<div style="padding:10px 0;border-top:1px solid var(--ln)"><div class="mh" style="margin-bottom:0"><div><b>${esc(h.name)}</b><div class="empty" style="margin:0">${c}/${el} days · ${streak(h.id)}-day streak</div></div><button class="x" data-a="dh" data-id="${h.id}" aria-label="Remove habit">×</button></div>${bar(el?Math.round(c/el*100):0)}<div class="hm">${days.map((s,i)=>`<button class="hdy ${on(h,s)?'on':''} ${s>t?'fut':''}" data-a="th" data-id="${h.id}" data-d="${s}" aria-label="${h.name} ${s}">${i+1}</button>`).join('')}</div></div>`).join(''):'<p class="empty">Add a habit, then tap days to check them off. They also show on the calendar.</p>'}</div>`};
+let bmsg='';
+const DEF=()=>({events:[],tasks:[],habits:[],log:{},courses:[],books:[],focus:{},res:[],vision:[],goals:{},logs:[],clock:null});
+function restore(txt){try{const o=JSON.parse(txt);if(!o||!Array.isArray(o.tasks))throw 0;S=Object.assign(DEF(),o);save();bmsg='Backup restored.'}catch(e){bmsg='That backup could not be read.'}render()}
+V.backup=()=>`<div class="card"><h2>Back up your data</h2><p class="empty">Download a backup file, or copy it and keep it somewhere safe. Restore it on any device.</p><div class="ctr" style="justify-content:flex-start"><button class="pri" data-a="bd">Download backup</button><button class="gh" data-a="bc">Copy backup</button></div><textarea id="rs" rows="3" placeholder="Paste a backup here to restore" style="width:100%;margin-top:10px"></textarea><div class="ctr" style="justify-content:flex-start;margin-top:8px"><button class="gh" data-a="br">Restore from paste</button><label class="gh">Restore from file<input type="file" accept=".json,application/json" data-rs hidden></label></div><p class="empty">${bmsg}</p></div>`;
+Object.assign(A,{hmv:d=>{hm.setMonth(hm.getMonth()+ +d.n)},ds:d=>{S.courses.find(c=>c.id===d.id).scores.splice(d.k,1)},
+ bd:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='college-planner-backup-'+T0()+'.json';a.click();bmsg='Backup download started. If nothing happened, use Copy backup.'},
+ bc:()=>{navigator.clipboard.writeText(JSON.stringify(S)).then(()=>{bmsg='Backup copied. Paste it into Notes or an email to yourself.';render()},()=>{bmsg='Copy was blocked here. Use Download backup instead.';render()})},
+ br:()=>{restore($('#rs').value)}});
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f="score"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const d=Object.fromEntries(new FormData(f)),c=S.courses.find(c=>c.id===f.dataset.id);(c.scores=c.scores||[]).push({n:d.n.trim(),s:+d.s,m:+d.m||100,w:+d.w||0});save();render()},true);
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.rs!==undefined&&t.files[0]){t.files[0].text().then(restore);t.value=''}});
+const hms=ms=>{const s=Math.max(0,Math.floor(ms/1000));return pad(s/3600|0)+':'+pad(s%3600/60|0)+':'+pad(s%60)};
+const hrs=ms=>{const m=Math.round(ms/60000);return (m/60|0)+'h '+pad(m%60)+'m'};
+const cn=id=>{const c=S.courses.find(c=>c.id===id);return c?c.name:'Deleted course'};
+const wkStart=()=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.getTime()};
+const tl2=V.tools,copts=()=>S.courses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+V.tools=()=>{const ws=wkStart(),by={};S.logs.forEach(l=>{const o=by[l.c]=by[l.c]||{w:0,t:0};o.t+=l.e-l.s;if(l.s>=ws)o.w+=l.e-l.s});const ids=Object.keys(by),mx=Math.max(1,...ids.map(i=>by[i].t)),rec=[...S.logs].sort((a,b)=>b.s-a.s).slice(0,30);
+ return `<div class="card"><h2>Study clock</h2>${S.clock?`<p class="empty" style="text-align:center">Studying ${esc(cn(S.clock.c))}</p><div class="timer" id="ck">${hms(Date.now()-S.clock.s)}</div><textarea id="sn" rows="3" placeholder="What are you studying? Topics, notes, questions…" style="width:100%;margin:10px 0">${esc(S.clock.n||'')}</textarea><div class="ctr"><button class="pri" data-a="kx">Clock out</button></div>`:S.courses.length?`<div class="ctr"><select id="cc" aria-label="Course">${copts()}</select><button class="pri" data-a="ko">Clock in</button></div>`:'<p class="empty">Add a course first, then clock in to track study hours.</p>'}${S.courses.length?`<form data-f="mlog" style="margin:12px 0 0"><select name="c" aria-label="Course">${copts()}</select><input type="date" name="d" value="${T0()}" required><input type="number" name="m" min="1" placeholder="Minutes" required style="width:100px"><input type="text" name="n" placeholder="Notes (optional)"><button class="gh">Add time manually</button></form>`:''}</div><div class="card"><h2>Hours by course</h2>${ids.length?ids.map(i=>`<div style="margin-bottom:10px"><div class="mh" style="margin:0"><b>${esc(cn(i))}</b><span class="pill">${hrs(by[i].t)} total · ${hrs(by[i].w)} this week</span></div>${bar(Math.round(by[i].t/mx*100))}</div>`).join(''):'<p class="empty">No study time logged yet.</p>'}${rec.length?'<h2 style="margin-top:12px">Study log</h2>'+rec.map(l=>`<div class="row"><div class="t"><b>${esc(cn(l.c))}</b><span>${fd(iso(new Date(l.s)))} · ${hrs(l.e-l.s)}</span><textarea data-ln="${l.id}" rows="2" placeholder="Add notes for this session" style="width:100%;margin-top:6px">${esc(l.n||'')}</textarea></div><button class="x" data-a="dl" data-id="${l.id}" aria-label="Delete session">×</button></div>`).join(''):''}</div>`+tl2()};
+Object.assign(A,{ko:()=>{if($('#cc'))S.clock={c:$('#cc').value,s:Date.now()}},kx:()=>{if(S.clock){S.logs.push({id:uid(),c:S.clock.c,s:S.clock.s,e:Date.now(),n:S.clock.n||''});S.clock=null}},dl:d=>{S.logs=S.logs.filter(l=>l.id!==d.id)}});
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f="mlog"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const d=Object.fromEntries(new FormData(f)),s=new Date(d.d+'T12:00').getTime();S.logs.push({id:uid(),c:d.c,s,e:s+(+d.m||0)*60000,n:(d.n||'').trim()});save();render()},true);
+setInterval(()=>{const e=$('#ck');if(e&&S.clock)e.textContent=hms(Date.now()-S.clock.s)},1000);
+const SY={col:null,st:'off',sent:{}},SE={off:'This device only',ok:'Synced',syncing:'Syncing…',err:'Sync error'};
+const updSy=()=>{const e=$('#sy');if(e)e.textContent=SE[SY.st]};
+async function push(){if(!SY.col)return;try{for(const v of S.vision)if(v.src&&!SY.sent[v.id]){await SY.col.doc('img_'+v.id).set({src:v.src});SY.sent[v.id]=1}await SY.col.doc('planner').set({ts:S.ts,json:JSON.stringify({...S,vision:S.vision.map(v=>({id:v.id,cap:v.cap,img:!!v.src}))})});SY.st='ok'}catch(e){SY.st='err'}updSy()}
+let pt;window.syncPush=()=>{if(!SY.col)return;SY.st='syncing';updSy();clearTimeout(pt);pt=setTimeout(push,1500)};
+function applyRemote(d){try{const r=JSON.parse(d.json),old=S.vision;S=Object.assign(DEF(),r);S.ts=d.ts;S.vision=S.vision.map(v=>{const o=old.find(x=>x.id===v.id);return o&&o.src?{...v,src:o.src}:v});S.vision.forEach(v=>{if(v.img)SY.sent[v.id]=1;if(v.img&&!v.src)SY.col.doc('img_'+v.id).get().then(s=>{if(s.exists){v.src=s.data().src;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()}}).catch(()=>{})});try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()}catch(e){}}
+(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),user=await claude.use('user');if(!db||!user)return;const id=await user.id();SY.col=db.collection('data/users/'+id);const ref=SY.col.doc('planner'),snap=await ref.get();if(snap.exists&&snap.data().ts>(S.ts||0))applyRemote(snap.data());else await push();SY.st='ok';updSy();ref.onSnapshot(s=>{if(s.exists&&s.data().ts>(S.ts||0))applyRemote(s.data())})}catch(e){SY.st='err';updSy()}})();
+updSy();
+const bk0=V.backup;V.backup=()=>`<div class="card"><h2>Sync across devices</h2><p>Status: <b>${SE[SY.st]}</b></p><p class="empty">${SY.st==='off'?'Sync works on the Claude-hosted version of Grad-ually. Open it from your Claude link while signed in to the same account on each device. This copy keeps data on this device only, so use a backup below to move it.':'Your data saves to your private cloud space and updates on every device where you open this page signed in to Claude. If two devices change things at once, the most recent change wins.'}</p></div>`+bk0();
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='sn'&&S.clock){S.clock.n=t.value;save()}if(t.dataset.ln){const l=S.logs.find(x=>x.id===t.dataset.ln);if(l){l.n=t.value;save()}}});
+render();
+</script>
+</body>
+</html>
